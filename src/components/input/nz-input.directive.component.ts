@@ -18,6 +18,7 @@ import {
 export class NzInputDirectiveComponent {
   size = 'default';
   nativeElement: HTMLElement;
+  @HostBinding(`class.ant-input-disabled`) _disabled = false;
 
   @Input()
   get nzSize(): string {
@@ -26,6 +27,20 @@ export class NzInputDirectiveComponent {
 
   set nzSize(value: string) {
     this.size = { large: 'lg', small: 'sm' }[ value ];
+  }
+
+  @Input()
+  get nzDisabled(): boolean {
+    return this._disabled;
+  };
+
+  set nzDisabled(value: boolean) {
+    if (value) {
+      this._render.setAttribute(this.nativeElement, 'disabled', '');
+    } else {
+      this._render.removeAttribute(this.nativeElement, 'disabled');
+    }
+    this._disabled = value;
   }
 
   @HostBinding(`class.ant-input`) _nzInput = true;
