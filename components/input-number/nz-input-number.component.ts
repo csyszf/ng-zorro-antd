@@ -68,6 +68,7 @@ export class NzInputNumberComponent implements ControlValueAccessor, AfterViewIn
   private _step = 1;
   private autoStepTimer;
   private _autoFocus = false;
+  private _formatter = (value) => value;
   displayValue: string | number;
   actualValue: string | number;
   isFocused = false;
@@ -82,7 +83,6 @@ export class NzInputNumberComponent implements ControlValueAccessor, AfterViewIn
   @Input() nzSize: 'small' | 'default' | 'large' = 'default';
   @Input() nzMin: number = -Infinity;
   @Input() nzMax: number = Infinity;
-  @Input() nzFormatter = (value) => value;
   @Input() nzParser = (value) => value;
   @Input() nzPrecision: number;
 
@@ -123,6 +123,16 @@ export class NzInputNumberComponent implements ControlValueAccessor, AfterViewIn
 
   get nzStep(): number {
     return this._step;
+  }
+
+  @Input()
+  set nzFormatter(v: (any) => any) {
+    this._formatter = v;
+    this.writeValue(Number(this.actualValue));
+  }
+
+  get nzFormatter(): (any) => any {
+    return this._formatter;
   }
 
   updateAutoFocus(): void {
